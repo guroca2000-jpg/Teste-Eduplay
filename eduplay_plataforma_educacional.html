@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EduPlay - Plataforma interativa de aprendizagem em Química para o Ensino Médio.">
+  <title>EduPlay | Aprender Jogando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-body: #f8f9fd;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --bg-subtle: #f0edf9;
+      --ink: #1e1e38;
+      --muted: #6c6f8a;
+      --line: #e6e5f3;
+      --purple: #6c5ce7;
+      --purple-hover: #5b4cc4;
+      --purple-light: #eeeaff;
+      --green: #10ac84;
+      --green-bg: #e6f9f4;
+      --red: #ee5253;
+      --red-bg: #ffeae9;
+      --orange: #ff9f43;
+      --orange-bg: #fff4e6;
+      --shadow: 0 12px 40px rgba(45, 37, 100, 0.08);
+      --shadow-hover: 0 20px 50px rgba(45, 37, 100, 0.14);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #0f0f1a;
+      --bg-surface: #181828;
+      --bg-card: #1f1f33;
+      --bg-subtle: #292946;
+      --ink: #f1f1f9;
+      --muted: #9da1c0;
+      --line: #2e2e4a;
+      --purple-light: #2b274c;
+      --green-bg: #11362d;
+      --red-bg: #3d1b1c;
+      --orange-bg: #3d2b17;
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-body);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+
+    /* Header & Nav */
+    .topbar {
+      height: 76px;
+      padding: 0 max(calc((100% - 1200px)/2), 24px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      transition: var(--transition);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font: 900 24px 'Nunito', sans-serif;
+      letter-spacing: -0.8px;
+      cursor: pointer;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple), #a29bfe);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      box-shadow: 0 6px 16px rgba(108, 92, 231, 0.35);
+    }
+
+    .brand-accent { color: var(--purple); }
+
+    .nav-links { display: flex; gap: 8px; }
+    .nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--purple);
+      background: var(--bg-subtle);
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+
+    /* Dark mode toggle switch */
+    .theme-toggle {
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 4px;
+      width: 58px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .theme-toggle span { font-size: 14px; z-index: 1; }
+    .theme-ball {
+      position: absolute;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--purple);
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    [data-theme="dark"] .theme-ball { transform: translateX(28px); }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--bg-subtle);
+      padding: 6px 12px;
+      border-radius: 30px;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--purple);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 12px 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn-primary:hover { background: var(--purple-hover); }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .btn-ghost:hover { background: var(--bg-subtle); }
+
+    .btn-dark { background: var(--ink); color: var(--bg-body); }
+    .btn-small { padding: 8px 14px; font-size: 12px; border-radius: 8px; }
+    .full-width { width: 100%; }
+
+    /* Containers */
+    .section-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; width: 100%; }
+    .page-section { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .page-section.active { display: block; opacity: 1; transform: translateY(0); }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 50px;
+      padding: 60px 24px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--purple);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px var(--green-bg);
+    }
+
+    .hero h1 {
+      font: 900 clamp(36px, 4.5vw, 56px)/1.1 'Nunito', sans-serif;
+      letter-spacing: -1.5px;
+      margin-bottom: 18px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(120deg, var(--purple), #a29bfe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-lead {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions { display: flex; gap: 14px; }
+
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      position: relative;
+    }
+
+    .mascot { font-size: 72px; margin: 15px 0; filter: drop-shadow(0 10px 15px rgba(108, 92, 231, 0.2)); }
+    .progress-bar-wrap { margin-top: 15px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .track { height: 8px; background: var(--bg-subtle); border-radius: 10px; overflow: hidden; }
+    .fill { height: 100%; background: linear-gradient(90deg, var(--purple), #a29bfe); border-radius: 10px; }
+
+    /* Features / Activity Grid */
+    .activities-section { padding: 40px 24px 70px; }
+    .section-heading { margin-bottom: 30px; text-align: center; }
+    .section-heading h2 { font: 900 32px 'Nunito', sans-serif; }
+
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .activity-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+
+    .activity-banner {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+    }
+
+    .bg-purple { background: linear-gradient(135deg, #a29bfe, var(--purple)); }
+    .bg-orange { background: linear-gradient(135deg, #ffeaa7, var(--orange)); }
+    .bg-green { background: linear-gradient(135deg, #55efc4, var(--green)); }
+
+    .activity-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .activity-content h3 { font: 900 18px 'Nunito', sans-serif; margin-bottom: 8px; }
+    .activity-content p { font-size: 13px; color: var(--muted); margin-bottom: 20px; flex: 1; }
+
+    /* Quiz Container */
+    .quiz-section {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 40px;
+      align-items: start;
+      padding: 50px 24px;
+    }
+
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .badge-teacher {
+      background: var(--orange-bg);
+      color: var(--orange);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .question-title { font: 900 20px 'Nunito', sans-serif; margin-bottom: 20px; }
+
+    .options-grid { display: grid; gap: 10px; }
+
+    .option-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+    }
+
+    .option-btn:hover { border-color: var(--purple); background: var(--bg-subtle); }
+
+    .option-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      color: var(--purple);
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+    }
+
+    .option-btn.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+    .option-btn.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+
+    .quiz-feedback {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .quiz-feedback.success { background: var(--green-bg); color: var(--green); }
+    .quiz-feedback.error { background: var(--red-bg); color: var(--red); }
+
+    .quiz-footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Subpages Shared */
+    .subpage-title { text-align: center; margin: 40px 0 30px; }
+    .subpage-title h1 { font: 900 36px 'Nunito', sans-serif; }
+    .subpage-title p { color: var(--muted); font-size: 15px; }
+
+    /* Ranking Page */
+    .podium-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 600px;
+      margin: 0 auto 35px;
+      align-items: end;
+    }
+
+    .podium-item {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 20px 10px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .podium-item.first {
+      border-color: var(--purple);
+      background: var(--purple-light);
+      padding-top: 30px;
+    }
+
+    .podium-icon { font-size: 32px; margin-bottom: 6px; }
+    .podium-name { font-weight: 800; font-size: 14px; display: block; }
+    .podium-xp { font-size: 12px; color: var(--purple); font-weight: 800; }
+
+    .ranking-list {
+      max-width: 750px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .ranking-row {
+      display: grid;
+      grid-template-columns: 50px 1fr 100px;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .ranking-row:last-child { border-bottom: none; }
+    .rank-num { font: 900 16px 'Nunito', sans-serif; color: var(--muted); }
+    .rank-user { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 14px; }
+    .rank-pts { text-align: right; font-weight: 800; color: var(--purple); font-size: 14px; }
+
+    /* Estudo em Grupo Page */
+    .groups-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      height: 600px;
+      margin-bottom: 50px;
+    }
+
+    .sidebar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-card h3 { font: 900 18px 'Nunito', sans-serif; margin-bottom: 15px; }
+
+    .room-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 4px;
+    }
+
+    .room-item {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg-surface);
+    }
+
+    .room-item:hover, .room-item.active {
+      border-color: var(--purple);
+      background: var(--bg-subtle);
+    }
+
+    .room-item h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .room-item p { font-size: 11px; color: var(--muted); }
+
+    .chat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: flex-col;
+      gap: 12px;
+    }
+
+    .chat-msg {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .chat-msg.sent {
+      background: var(--purple);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+      margin-left: auto;
+    }
+
+    .chat-msg.received {
+      background: var(--bg-subtle);
+      color: var(--ink);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-author { font-size: 10px; font-weight: 800; opacity: 0.8; margin-bottom: 2px; display: block; }
+
+    .chat-input-area {
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 10px;
+      background: var(--bg-surface);
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--bg-body);
+    }
+
+    /* Teacher Page Form */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      max-width: 800px;
+      margin: 0 auto 30px;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field label { font-size: 12px; font-weight: 800; display: block; margin-bottom: 6px; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--bg-body);
+      color: var(--ink);
+      transition: var(--transition);
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--purple);
+      outline: none;
+    }
+
+    .created-questions-list {
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .q-item {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .q-item-info b { font-size: 14px; display: block; margin-bottom: 4px; }
+    .q-item-info span { font-size: 12px; color: var(--muted); }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      border-top: 1px solid var(--line);
+      padding: 30px 24px;
+      background: var(--bg-surface);
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Modals & Toast */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop[hidden] { display: none; }
+
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      width: min(100%, 420px);
+      box-shadow: var(--shadow-hover);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--ink);
+      color: var(--bg-body);
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      z-index: 300;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+      .hero-actions { justify-content: center; }
+      .quiz-section { grid-template-columns: 1fr; }
+      .groups-layout { grid-template-columns: 1fr; height: auto; }
+      .chat-card { height: 450px; }
+      .topbar { padding: 0 16px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Header -->
+  <header class="topbar">
+    <div class="brand" onclick="navigateTo('home')">
+      <div class="brand-mark">E</div>
+      <span>Edu<span class="brand-accent">Play</span></span>
+    </div>
+
+    <nav class="nav-links">
+      <button id="nav-home" class="nav-btn active" onclick="navigateTo('home')">Início</button>
+      <button id="nav-groups" class="nav-btn" onclick="navigateTo('groups')">Estudo em Grupo</button>
+      <button id="nav-ranking" class="nav-btn" onclick="navigateTo('ranking')">Ranking</button>
+      <button id="nav-teacher" class="nav-btn" onclick="navigateTo('teacher')">Professor</button>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- Dark Mode Switch -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+        <span>🌙</span>
+        <span>☀️</span>
+        <div class="theme-ball"></div>
+      </button>
+
+      <div class="user-badge">
+        <div class="avatar" id="userAvatar">A</div>
+        <span id="navUserName">Visitante</span>
+      </div>
+
+      <button class="btn btn-primary btn-small" id="loginBtn">Entrar</button>
+    </div>
+  </header>
+
+  <!-- CONTENT PAGES -->
+  <main>
+
+    <!-- PAGE 1: INÍCIO / QUIZ -->
+    <div id="page-home" class="page-section active">
+      <section class="section-wrap hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="pulse"></span> APRENDIZADO GAMIFICADO DE QUÍMICA</div>
+          <h1>Domine a <span class="gradient-text">Química</span> no seu ritmo.</h1>
+          <p class="hero-lead">Responda a perguntas do Ensino Médio, ganhe XP, dispute posições no ranking e tire dúvidas em grupos de estudo com sua turma.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="scrollToQuiz()">Iniciar Desafio 🚀</button>
+            <button class="btn btn-ghost" onclick="navigateTo('groups')">Salas de Estudo 🤝</button>
+          </div>
+        </div>
+        
+        <div class="hero-card">
+          <div class="mascot">🧪</div>
+          <h3 style="font: 900 22px 'Nunito';">Nível 1 - Aprendiz</h3>
+          <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">Continue praticando para evoluir!</p>
+          <div class="progress-bar-wrap">
+            <div class="progress-label"><span>Progresso Atual</span><b id="heroXpText">0 XP</b></div>
+            <div class="track"><div class="fill" id="heroXpBar" style="width: 10%;"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grade de Destaques -->
+      <section class="section-wrap activities-section">
+        <div class="section-heading">
+          <h2>Recursos da <span class="gradient-text">Plataforma</span></h2>
+        </div>
+        <div class="activity-grid">
+          <div class="activity-card">
+            <div class="activity-banner bg-purple">🧩</div>
+            <div class="activity-content">
+              <h3>Quiz Interativo</h3>
+              <p>Questões de Química preparadas para o vestibular e ENEM com feedback imediato.</p>
+              <button class="btn btn-dark btn-small" onclick="scrollToQuiz()">Praticar Agora →</button>
+            </div>
+          </div>
+          <div class="activity-card">
+            <div class="activity-banner bg-green">👥</div>
+            <div class="activity-content">
+              <h3>Estudo em Grupo</h3>
+              <p>Crie e entre em salas virtuais para discutir matérias e colaborar em tempo real.</p>
+              <button class="btn btn-dark btn-small" onclick="navigateTo('groups')">Acessar Salas →</button>
+            </div>
+          </div>
+          <div class="activity-card">
+            <div class="activity-banner bg-orange">👨‍🏫</div>
+            <div class="activity-content">
+              <h3>Área do Professor</h3>
+              <p>Professores podem cadastrar novas perguntas e gerar folhas de atividades para impressão.</p>
+              <button class="btn btn-dark btn-small" onclick="navigateTo('teacher')">Painel Pedagógico →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz Section -->
+      <section class="section-wrap quiz-section" id="quizContainer">
+        <div>
+          <div class="eyebrow">DESAFIO PRÁTICO</div>
+          <h2 style="font: 900 36px 'Nunito'; margin-bottom: 12px;">Testes de <span class="gradient-text">Química</span></h2>
+          <p style="color: var(--muted); font-size: 14px; line-height: 1.6;">As perguntas criadas por professores aparecem automaticamente no início da fila! Responda corretamente para pontuar.</p>
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-header">
+            <span id="quizBadgeType">QUIZ OFICIAL</span>
+            <span id="quizProgressText">01 / 10</span>
+          </div>
+
+          <h3 class="question-title" id="questionText">Carregando pergunta...</h3>
+
+          <div class="options-grid" id="optionsContainer"></div>
+
+          <div class="quiz-feedback" id="quizFeedback" hidden></div>
+
+          <div class="quiz-footer">
+            <span id="quizHintText" style="font-size: 12px; color: var(--muted);">Escolha uma alternativa.</span>
+            <button class="btn btn-primary btn-small" id="nextQuestionBtn" disabled>Próxima →</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- PAGE 2: ESTUDO EM GRUPO -->
+    <div id="page-groups" class="page-section">
+      <div class="section-wrap subpage-title">
+        <div class="eyebrow" style="justify-content: center;"><span class="pulse"></span> APRENDER EM EQUIPE</div>
+        <h1>Salas de <span class="gradient-text">Estudo Coletivo</span></h1>
+        <p>Junte-se a uma sala temática para debater conteúdos de Química ou crie a sua própria sala.</p>
+      </div>
+
+      <div class="section-wrap groups-layout">
+        <!-- Sidebar: Salas -->
+        <div class="sidebar-card">
+          <h3>Salas Ativas</h3>
+          <div class="room-list" id="roomList"></div>
+          <button class="btn btn-primary full-width" style="margin-top: 15px;" onclick="openCreateRoomModal()">+ Criar Nova Sala</button>
+        </div>
+
+        <!-- Chat Principal da Sala -->
+        <div class="chat-card">
+          <div class="chat-header">
+            <div>
+              <h4 id="activeRoomTitle" style="font-weight: 800;">Selecione uma sala</h4>
+              <p id="activeRoomDesc" style="font-size: 11px; color: var(--muted);">Conecte-se para interagir</p>
+            </div>
+            <span style="font-size: 12px; font-weight: 800; color: var(--green);" id="activeRoomCount">● 1 online</span>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div style="text-align: center; color: var(--muted); margin-top: 50px; font-size: 13px;">Selecione ou crie uma sala para começar a conversar!</div>
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Digite sua dúvida ou comentário..." onkeypress="handleChatEnter(event)">
+            <button class="btn btn-primary btn-small" onclick="sendChatMessage()">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: RANKING -->
+    <div id="page-ranking" class="page-section">
+      <div class="section-wrap subpage-title">
+        <div class="eyebrow" style="justify-content: center;">CLASSIFICAÇÃO GERAL</div>
+        <h1>Ranking dos <span class="gradient-text">Estudantes</span></h1>
+        <p id="studentCountText">Carregando ranking...</p>
+      </div>
+
+      <div class="section-wrap">
+        <div class="podium-container" id="podiumContainer"></div>
+        <div class="ranking-list" id="rankingList"></div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: PAINEL DO PROFESSOR -->
+    <div id="page-teacher" class="page-section">
+      <div class="section-wrap subpage-title">
+        <div class="eyebrow" style="justify-content: center;">ÁREA PEDAGÓGICA</div>
+        <h1>Painel do <span class="gradient-text">Professor</span></h1>
+        <p>Cadastre questões ativas para o quiz online ou prepare materiais impressos com gabarito.</p>
+      </div>
+
+      <div class="section-wrap">
+        <div class="form-card">
+          <h2 style="font: 900 22px 'Nunito'; margin-bottom: 20px;">Criar Nova Pergunta</h2>
+          <form id="teacherForm">
+            <div class="field">
+              <label for="teacherPrompt">Enunciado / Pergunta</label>
+              <textarea id="teacherPrompt" rows="3" placeholder="Ex.: Qual o produto da reação de neutralização entre HCl e NaOH?" required></textarea>
+            </div>
+
+            <div class="field">
+              <label for="teacherType">Tipo de Questão</label>
+              <select id="teacherType" onchange="toggleTeacherFields()">
+                <option value="choice">Múltipla Escolha (Online e Impresso)</option>
+                <option value="written">Resposta Escrita (Exclusivo para Impressão)</option>
+              </select>
+            </div>
+
+            <div id="teacherChoiceGroup">
+              <div class="field"><label for="optA">Alternativa A</label><input type="text" id="optA" placeholder="Opção A"></div>
+              <div class="field"><label for="optB">Alternativa B</label><input type="text" id="optB" placeholder="Opção B"></div>
+              <div class="field"><label for="optC">Alternativa C</label><input type="text" id="optC" placeholder="Opção C"></div>
+              <div class="field"><label for="optD">Alternativa D</label><input type="text" id="optD" placeholder="Opção D"></div>
+              
+              <div class="field">
+                <label for="correctOpt">Gabarito (Opção Correta)</label>
+                <select id="correctOpt">
+                  <option value="0">Alternativa A</option>
+                  <option value="1">Alternativa B</option>
+                  <option value="2">Alternativa C</option>
+                  <option value="3">Alternativa D</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="teacherExplanation">Explicação Pedagógica (Feedback do Quiz)</label>
+              <input type="text" id="teacherExplanation" placeholder="Explicativo curto exibido ao responder">
+            </div>
+
+            <button type="submit" class="btn btn-primary full-width">Salvar e Publicar Questão</button>
+          </form>
+        </div>
+
+        <!-- Lista de Criadas -->
+        <div class="created-questions-list">
+          <h3 style="font: 900 20px 'Nunito'; margin-bottom: 15px;">Perguntas Cadastradas</h3>
+          <div id="teacherQuestionsList"></div>
+
+          <div style="margin-top: 25px; background: var(--bg-card); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--line);">
+            <h4 style="font-weight: 800; margin-bottom: 10px;">Gerar Atividade Impressa (PDF)</h4>
+            <div class="field">
+              <label for="printTitle">Título da Prova / Atividade</label>
+              <input type="text" id="printTitle" value="Avaliação de Química - Ensino Médio">
+            </div>
+            <button class="btn btn-primary" onclick="generatePrintablePDF()">Imprimir Folha de Questões</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="section-wrap">
+      <p>© 2026 EduPlay • Plataforma Educacional de Química para o Ensino Médio.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL: LOGIN / CADASTRO DE ALUNO -->
+  <div class="modal-backdrop" id="loginModal" hidden>
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+      <h2 style="font: 900 24px 'Nunito'; margin-bottom: 8px;">Identifique-se</h2>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">Digite seu nome para salvar seus pontos no ranking.</p>
+      
+      <form id="studentLoginForm">
+        <div class="field">
+          <label for="studentNameInput">Seu Nome Completo</label>
+          <input type="text" id="studentNameInput" placeholder="Ex.: Maria Souza" required>
+        </div>
+        <div class="field">
+          <label for="studentEmailInput">E-mail</label>
+          <input type="email" id="studentEmailInput" placeholder="maria@escola.com" required>
+        </div>
+        <button class="btn btn-primary full-width" type="submit">Salvar Perfil</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CRIAR SALA DE ESTUDO -->
+  <div class="modal-backdrop" id="createRoomModal" hidden>
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('createRoomModal')">×</button>
+      <h2 style="font: 900 24px 'Nunito'; margin-bottom: 8px;">Nova Sala de Estudo</h2>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">Crie um grupo temático para estudar com sua turma.</p>
+      
+      <form id="createRoomForm">
+        <div class="field">
+          <label for="roomNameInput">Nome da Sala</label>
+          <input type="text" id="roomNameInput" placeholder="Ex.: Revisão para o ENEM - Orgânica" required>
+        </div>
+        <div class="field">
+          <label for="roomDescInput">Tópico principal</label>
+          <input type="text" id="roomDescInput" placeholder="Ex.: Funções oxigenadas e reações" required>
+        </div>
+        <button class="btn btn-primary full-width" type="submit">Criar Sala</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">Notificação</div>
+
+  <script>
+    /* ==========================================================================
+       ESTADO GLOBAL & LOCALSTORAGE
+       ========================================================================== */
+    const STORAGE_KEYS = {
+      THEME: 'eduplay_theme',
+      STUDENTS: 'eduplay_students_v4',
+      CURRENT_USER: 'eduplay_current_user_v4',
+      TEACHER_QUESTIONS: 'eduplay_teacher_questions_v4',
+      STUDY_ROOMS: 'eduplay_rooms_v4',
+      CHAT_MESSAGES: 'eduplay_chat_messages_v4'
+    };
+
+    // 10 Perguntas Padrão de Química do Ensino Médio
+    const defaultChemistryQuestions = [
+      {
+        id: 'def_1',
+        prompt: "Qual das alternativas contém apenas substâncias formadas por ligações covalentes?",
+        options: ["NaCl e H₂O", "H₂O e CO₂", "CaCl₂ e CH₄", "KBr e HCl"],
+        correct: 1,
+        explanation: "H₂O e CO₂ são compostos formados exclusivamente por ametais, realizando compartilhamento de elétrons (ligações covalentes).",
+        isTeacher: false
+      },
+      {
+        id: 'def_2',
+        prompt: "Em uma solução aquosa com pH igual a 3 a 25 °C, a solução é classificada como:",
+        options: ["Ácida", "Básica", "Neutra", "Alcalina"],
+        correct: 0,
+        explanation: "Soluções com pH menor que 7 a 25 °C possuem maior concentração de íons H⁺ e são consideradas ácidas.",
+        isTeacher: false
+      },
+      {
+        id: 'def_3',
+        prompt: "Qual função orgânica é caracterizada pela presença da hidroxila (-OH) ligada a um carbono saturado?",
+        options: ["Aldeído", "Ácido Carboxílico", "Álcool", "Cetona"],
+        correct: 2,
+        explanation: "Os álcoois possuem o grupo funcional hidroxila (-OH) ligado diretamente a um carbono sp³ (saturado).",
+        isTeacher: false
+      },
+      {
+        id: 'def_4',
+        prompt: "Qual partícula subatômica possui carga elétrica positiva e está localizada no núcleo do átomo?",
+        options: ["Elétron", "Nêutron", "Próton", "Pósitron"],
+        correct: 2,
+        explanation: "Os prótons possuem carga positiva (+1) e compõem o núcleo atômico juntamente com os nêutrons.",
+        isTeacher: false
+      },
+      {
+        id: 'def_5',
+        prompt: "O elemento químico sódio (Na, Z=11) pertence a qual família da Tabela Periódica?",
+        options: ["Gases Nobres", "Metais Alcalinos", "Halogênios", "Metais Alcalino-Terrosos"],
+        correct: 1,
+        explanation: "O Sódio está no Grupo 1 (Família 1A), sendo classificado como um Metal Alcalino.",
+        isTeacher: false
+      },
+      {
+        id: 'def_6',
+        prompt: "Qual transformação representa um fenômeno químico?",
+        options: ["Derretimento de um cubo de gelo", "Evaporação da água", "Queima de uma vela (combustão)", "Corte de uma folha de papel"],
+        correct: 2,
+        explanation: "A combustão da vela altera a natureza da matéria, formando novas substâncias (CO₂ e H₂O), caracterizando um fenômeno químico.",
+        isTeacher: false
+      },
+      {
+        id: 'def_7',
+        prompt: "Segundo a Lei de Lavoisier (Conservação das Massas), em um sistema fechado:",
+        options: ["A massa dos produtos é maior que a dos reagentes", "A massa total dos reagentes é igual à massa total dos produtos", "A massa diminui após o término da reação", "Os átomos mudam de elemento químico"],
+        correct: 1,
+        explanation: "Na natureza nada se cria, nada se perde, tudo se transforma: a massa total se conserva.",
+        isTeacher: false
+      },
+      {
+        id: 'def_8',
+        prompt: "Qual das opções representa um exemplo de hidrocarboneto aromático?",
+        options: ["Metano", "Benzeno", "Etanol", "Acetona"],
+        correct: 1,
+        explanation: "O Benzeno (C₆H₆) é o hidrocarboneto aromático fundamental, contendo o anel benzênico.",
+        isTeacher: false
+      },
+      {
+        id: 'def_9',
+        prompt: "O processo de separação de misturas heterogêneas sólido-líquido utilizando uma barreira porosa é chamado de:",
+        options: ["Destilação", "Filtração", "Decantação", "Evaporação"],
+        correct: 0,
+        explanation: "A filtração retém a fase sólida no filtro enquanto permite a passagem da fase líquida.",
+        isTeacher: false
+      },
+      {
+        id: 'def_10',
+        prompt: "Qual o número de mols contido em 36 gramas de água (H₂O)? (Massa molar da água = 18 g/mol)",
+        options: ["1 mol", "2 mols", "3 mols", "18 mols"],
+        correct: 1,
+        explanation: "Número de mols n = massa / massa molar = 36 g / 18 g/mol = 2 mols.",
+        isTeacher: false
+      }
+    ];
+
+    // Salas de estudo padrões iniciais
+    const defaultRooms = [
+      { id: 'room_1', name: 'Revisão ENEM - Química Orgânica', desc: 'Cadeias carbônicas e Funções oxigenadas' },
+      { id: 'room_2', name: 'Dúvidas de Estequiometria', desc: 'Cálculo de massa, mol e rendimento' },
+      { id: 'room_3', name: 'Tabela Periódica & Ligações', desc: 'Raio atômico, eletronegatividade e compostos' }
+    ];
+
+    /* ==========================================================================
+       INICIALIZAÇÃO & TEMA (DARK MODE)
+       ========================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initUser();
+      initQuiz();
+      initRooms();
+      renderTeacherQuestionsList();
+
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+      document.getElementById('studentLoginForm').addEventListener('submit', handleStudentLogin);
+      document.getElementById('teacherForm').addEventListener('submit', handleTeacherSubmit);
+      document.getElementById('createRoomForm').addEventListener('submit', handleCreateRoomSubmit);
+    });
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const target = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem(STORAGE_KEYS.THEME, target);
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const targetPage = document.getElementById(`page-${pageId}`);
+      const targetBtn = document.getElementById(`nav-${pageId}`);
+
+      if (targetPage) targetPage.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      window.scrollTo(0, 0);
+
+      if (pageId === 'ranking') renderRanking();
+      if (pageId === 'groups') initRooms();
+    }
+
+    function scrollToQuiz() {
+      navigateTo('home');
+      document.getElementById('quizContainer')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).hidden = true;
+    }
+
+    /* ==========================================================================
+       GESTÃO DE USUÁRIO & ALUNOS
+       ========================================================================== */
+    function getStudents() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.STUDENTS)) || []; }
+      catch { return []; }
+    }
+
+    function saveStudents(list) {
+      localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(list));
+    }
+
+    function getCurrentUserEmail() {
+      return localStorage.getItem(STORAGE_KEYS.CURRENT_USER) || '';
+    }
+
+    function getCurrentStudent() {
+      const email = getCurrentUserEmail();
+      return getStudents().find(s => s.email === email);
+    }
+
+    function initUser() {
+      const student = getCurrentStudent();
+      const navName = document.getElementById('navUserName');
+      const avatar = document.getElementById('userAvatar');
+
+      if (student) {
+        navName.textContent = student.name;
+        avatar.textContent = student.name.charAt(0).toUpperCase();
+        document.getElementById('loginBtn').textContent = 'Perfil';
+        updateHeroXp(student.xp || 0);
+      } else {
+        navName.textContent = 'Visitante';
+        avatar.textContent = 'V';
+        document.getElementById('loginBtn').textContent = 'Entrar';
+        updateHeroXp(0);
+      }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      document.getElementById('loginModal').hidden = false;
+    });
+
+    function handleStudentLogin(e) {
+      e.preventDefault();
+      const name = document.getElementById('studentNameInput').value.trim();
+      const email = document.getElementById('studentEmailInput').value.trim().toLowerCase();
+
+      if (!name || !email) return;
+
+      const students = getStudents();
+      let student = students.find(s => s.email === email);
+
+      if (student) {
+        student.name = name;
+      } else {
+        student = { name, email, xp: 0 };
+        students.push(student);
+      }
+
+      saveStudents(students);
+      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, email);
+      closeModal('loginModal');
+      initUser();
+      toast(`Bem-vindo(a), ${name}!`);
+    }
+
+    function addXP(amount) {
+      const email = getCurrentUserEmail();
+      if (!email) {
+        toast('Faça seu login para guardar seus pontos no ranking!');
+        return;
+      }
+
+      const students = getStudents();
+      const student = students.find(s => s.email === email);
+      if (student) {
+        student.xp = (student.xp || 0) + amount;
+        saveStudents(students);
+        initUser();
+        toast(`+${amount} XP Adicionados! ✨`);
+      }
+    }
+
+    function updateHeroXp(xp) {
+      document.getElementById('heroXpText').textContent = `${xp} XP`;
+      const perc = Math.min(100, Math.max(10, (xp / 200) * 100));
+      document.getElementById('heroXpBar').style.width = `${perc}%`;
+    }
+
+    /* ==========================================================================
+       SISTEMA DE QUIZ & SOBREPOSIÇÃO DE PERGUNTAS DO PROFESSOR
+       ========================================================================== */
+    let quizList = [];
+    let currentQIndex = 0;
+    let quizAnswered = false;
+
+    function getTeacherQuestions() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.TEACHER_QUESTIONS)) || []; }
+      catch { return []; }
+    }
+
+    function initQuiz() {
+      // PERGUNTAS DO PROFESSOR NO INÍCIO (apenas múltipla escolha para o quiz online)
+      const teacherQs = getTeacherQuestions()
+        .filter(q => q.type === 'choice')
+        .map(q => ({ ...q, isTeacher: true }));
+
+      // Unir: Professor primeiro + Padrões depois
+      quizList = [...teacherQs, ...defaultChemistryQuestions];
+      currentQIndex = 0;
+      renderCurrentQuestion();
+    }
+
+    function renderCurrentQuestion() {
+      const q = quizList[currentQIndex];
+      if (!q) return;
+
+      quizAnswered = false;
+      const progressText = document.getElementById('quizProgressText');
+      const badge = document.getElementById('quizBadgeType');
+      const questionTitle = document.getElementById('questionText');
+      const optionsBox = document.getElementById('optionsContainer');
+      const feedback = document.getElementById('quizFeedback');
+      const nextBtn = document.getElementById('nextQuestionBtn');
+
+      progressText.textContent = `${String(currentQIndex + 1).padStart(2, '0')} / ${String(quizList.length).padStart(2, '0')}`;
+      
+      if (q.isTeacher) {
+        badge.textContent = "⭐ PERGUNTA DO PROFESSOR";
+        badge.className = "badge-teacher";
+      } else {
+        badge.textContent = "QUIZ OFICIAL DE QUÍMICA";
+        badge.className = "";
+      }
+
+      questionTitle.textContent = q.prompt;
+      optionsBox.innerHTML = '';
+      feedback.hidden = true;
+      nextBtn.disabled = true;
+
+      q.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="option-letter">${"ABCD"[idx]}</span> <span>${escapeHTML(optText)}</span>`;
+        btn.addEventListener('click', () => handleSelectOption(idx, btn));
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function handleSelectOption(chosenIdx, btnEl) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const q = quizList[currentQIndex];
+      const feedback = document.getElementById('quizFeedback');
+      const nextBtn = document.getElementById('nextQuestionBtn');
+      const allBtns = document.querySelectorAll('.option-btn');
+
+      allBtns.forEach((b, i) => {
+        b.style.pointerEvents = 'none';
+        if (i === q.correct) b.classList.add('correct');
+      });
+
+      if (chosenIdx === q.correct) {
+        feedback.textContent = ` Correto! ${q.explanation || ''}`;
+        feedback.className = 'quiz-feedback success';
+        addXP(15);
+      } else {
+        btnEl.classList.add('wrong');
+        feedback.textContent = ` Incorreto. Explicação: ${q.explanation || ''}`;
+        feedback.className = 'quiz-feedback error';
+      }
+
+      feedback.hidden = false;
+      nextBtn.disabled = false;
+    }
+
+    document.getElementById('nextQuestionBtn').addEventListener('click', () => {
+      if (currentQIndex < quizList.length - 1) {
+        currentQIndex++;
+        renderCurrentQuestion();
+      } else {
+        toast('Você concluiu todas as questões disponíveis!');
+        currentQIndex = 0;
+        renderCurrentQuestion();
+      }
+    });
+
+    /* ==========================================================================
+       ESTUDO EM GRUPO (SALAS & CHAT EM TEMPO REAL SIMULADO)
+       ========================================================================== */
+    let currentRoomId = null;
+
+    function getRooms() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.STUDY_ROOMS));
+        return (saved && saved.length) ? saved : defaultRooms;
+      } catch { return defaultRooms; }
+    }
+
+    function saveRooms(rooms) {
+      localStorage.setItem(STORAGE_KEYS.STUDY_ROOMS, JSON.stringify(rooms));
+    }
+
+    function getChatMessages() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.CHAT_MESSAGES)) || {}; }
+      catch { return {}; }
+    }
+
+    function saveChatMessages(msgs) {
+      localStorage.setItem(STORAGE_KEYS.CHAT_MESSAGES, JSON.stringify(msgs));
+    }
+
+    function initRooms() {
+      const rooms = getRooms();
+      const roomListEl = document.getElementById('roomList');
+      roomListEl.innerHTML = '';
+
+      rooms.forEach(room => {
+        const div = document.createElement('div');
+        div.className = `room-item ${room.id === currentRoomId ? 'active' : ''}`;
+        div.innerHTML = `<h4>${escapeHTML(room.name)}</h4><p>${escapeHTML(room.desc)}</p>`;
+        div.onclick = () => selectRoom(room.id);
+        roomListEl.appendChild(div);
+      });
+
+      if (!currentRoomId && rooms.length > 0) {
+        selectRoom(rooms[0].id);
+      }
+    }
+
+    function selectRoom(roomId) {
+      currentRoomId = roomId;
+      const rooms = getRooms();
+      const room = rooms.find(r => r.id === roomId);
+      if (!room) return;
+
+      document.getElementById('activeRoomTitle').textContent = room.name;
+      document.getElementById('activeRoomDesc').textContent = room.desc;
+
+      initRooms();
+      renderChatMessages();
+    }
+
+    function renderChatMessages() {
+      const chatBox = document.getElementById('chatMessages');
+      if (!currentRoomId) return;
+
+      const allMsgs = getChatMessages();
+      const msgs = allMsgs[currentRoomId] || [];
+      const user = getCurrentStudent();
+      const currentEmail = getCurrentUserEmail();
+
+      if (msgs.length === 0) {
+        chatBox.innerHTML = `<div style="text-align: center; color: var(--muted); margin-top: 40px; font-size: 13px;">Nenhuma mensagem nesta sala ainda. Seja o primeiro a escrever!</div>`;
+        return;
+      }
+
+      chatBox.innerHTML = msgs.map(m => {
+        const isMe = m.authorEmail === currentEmail;
+        return `
+          <div class="chat-msg ${isMe ? 'sent' : 'received'}">
+            <span class="chat-author">${escapeHTML(m.authorName)}</span>
+            ${escapeHTML(m.text)}
+          </div>
+        `;
+      }).join('');
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text || !currentRoomId) return;
+
+      const user = getCurrentStudent();
+      const authorName = user ? user.name : 'Visitante';
+      const authorEmail = getCurrentUserEmail();
+
+      const allMsgs = getChatMessages();
+      if (!allMsgs[currentRoomId]) allMsgs[currentRoomId] = [];
+
+      allMsgs[currentRoomId].push({
+        text,
+        authorName,
+        authorEmail,
+        timestamp: new Date().toISOString()
+      });
+
+      saveChatMessages(allMsgs);
+      input.value = '';
+      renderChatMessages();
+    }
+
+    function handleChatEnter(e) {
+      if (e.key === 'Enter') sendChatMessage();
+    }
+
+    function openCreateRoomModal() {
+      document.getElementById('createRoomModal').hidden = false;
+    }
+
+    function handleCreateRoomSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('roomNameInput').value.trim();
+      const desc = document.getElementById('roomDescInput').value.trim();
+      if (!name || !desc) return;
+
+      const rooms = getRooms();
+      const newRoom = { id: `room_${Date.now()}`, name, desc };
+      rooms.push(newRoom);
+      saveRooms(rooms);
+
+      closeModal('createRoomModal');
+      document.getElementById('createRoomForm').reset();
+      selectRoom(newRoom.id);
+      toast('Nova sala de estudos criada!');
+    }
+
+    /* ==========================================================================
+       RANKING DOS ALUNOS
+       ========================================================================== */
+    function renderRanking() {
+      const students = getStudents().sort((a, b) => (b.xp || 0) - (a.xp || 0));
+      const podium = document.getElementById('podiumContainer');
+      const list = document.getElementById('rankingList');
+      const count = document.getElementById('studentCountText');
+
+      count.textContent = `${students.length} estudante(s) registrado(s)`;
+
+      if (students.length === 0) {
+        podium.innerHTML = '';
+        list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--muted);">Nenhum estudante no ranking ainda.</div>`;
+        return;
+      }
+
+      // Pódio (Top 3)
+      const top3Order = [1, 0, 2];
+      const medals = ["🥇", "🥈", "🥉"];
+
+      podium.innerHTML = top3Order.map(idx => {
+        const s = students[idx];
+        if (!s) return `<div></div>`;
+        return `
+          <div class="podium-item ${idx === 0 ? 'first' : ''}">
+            <div class="podium-icon">${medals[idx]}</div>
+            <span class="podium-name">${escapeHTML(s.name)}</span>
+            <span class="podium-xp">${s.xp || 0} XP</span>
+          </div>
+        `;
+      }).join('');
+
+      // Lista geral
+      list.innerHTML = students.map((s, i) => `
+        <div class="ranking-row">
+          <div class="rank-num">${i + 1}º</div>
+          <div class="rank-user">
+            <div class="avatar">${escapeHTML(s.name.charAt(0).toUpperCase())}</div>
+            ${escapeHTML(s.name)} ${s.email === getCurrentUserEmail() ? '<strong>(Você)</strong>' : ''}
+          </div>
+          <div class="rank-pts">${s.xp || 0} XP</div>
+        </div>
+      `).join('');
+    }
+
+    /* ==========================================================================
+       PAINEL DO PROFESSOR (CRIAÇÃO & GERADOR IMPRESSO)
+       ========================================================================== */
+    function toggleTeacherFields() {
+      const type = document.getElementById('teacherType').value;
+      document.getElementById('teacherChoiceGroup').style.display = type === 'choice' ? 'block' : 'none';
+    }
+
+    function handleTeacherSubmit(e) {
+      e.preventDefault();
+      const prompt = document.getElementById('teacherPrompt').value.trim();
+      const type = document.getElementById('teacherType').value;
+      const explanation = document.getElementById('teacherExplanation').value.trim();
+
+      if (!prompt) return;
+
+      const newQ = {
+        id: `t_${Date.now()}`,
+        prompt,
+        type,
+        explanation,
+        createdAt: new Date().toISOString()
+      };
+
+      if (type === 'choice') {
+        const a = document.getElementById('optA').value.trim();
+        const b = document.getElementById('optB').value.trim();
+        const c = document.getElementById('optC').value.trim();
+        const d = document.getElementById('optD').value.trim();
+
+        if (!a || !b || !c || !d) {
+          toast('Preencha as 4 opções de múltipla escolha!');
+          return;
+        }
+
+        newQ.options = [a, b, c, d];
+        newQ.correct = Number(document.getElementById('correctOpt').value);
+      }
+
+      const questions = getTeacherQuestions();
+      questions.push(newQ);
+      localStorage.setItem(STORAGE_KEYS.TEACHER_QUESTIONS, JSON.stringify(questions));
+
+      document.getElementById('teacherForm').reset();
+      toggleTeacherFields();
+      renderTeacherQuestionsList();
+      initQuiz(); // Atualiza a fila do quiz com a nova pergunta no topo
+      toast('Pergunta salva! Ela já está disponível no topo do Quiz.');
+    }
+
+    function renderTeacherQuestionsList() {
+      const container = document.getElementById('teacherQuestionsList');
+      const questions = getTeacherQuestions();
+
+      if (questions.length === 0) {
+        container.innerHTML = `<div style="color: var(--muted); font-size: 13px;">Nenhuma pergunta cadastrada pelo professor.</div>`;
+        return;
+      }
+
+      container.innerHTML = questions.map((q, i) => `
+        <div class="q-item">
+          <div class="q-item-info">
+            <b>${i + 1}. ${escapeHTML(q.prompt)}</b>
+            <span>Tipo: ${q.type === 'choice' ? 'Múltipla Escolha' : 'Resposta Escrita'}</span>
+          </div>
+          <button class="btn btn-ghost btn-small" onclick="deleteTeacherQuestion('${q.id}')">Excluir</button>
+        </div>
+      `).join('');
+    }
+
+    function deleteTeacherQuestion(id) {
+      let questions = getTeacherQuestions();
+      questions = questions.filter(q => q.id !== id);
+      localStorage.setItem(STORAGE_KEYS.TEACHER_QUESTIONS, JSON.stringify(questions));
+      renderTeacherQuestionsList();
+      initQuiz();
+      toast('Pergunta removida.');
+    }
+
+    // Gerador de Folha Impressa / PDF
+    function generatePrintablePDF() {
+      const questions = getTeacherQuestions();
+      if (questions.length === 0) {
+        toast('Cadastre pelo menos uma pergunta antes de imprimir!');
+        return;
+      }
+
+      const title = document.getElementById('printTitle').value || "Atividade de Química";
+
+      const content = questions.map((q, i) => {
+        let qHtml = `<li style="margin-bottom: 25px;"><p style="font-weight: bold; font-size: 15px;">${i + 1}. ${escapeHTML(q.prompt)}</p>`;
+        
+        if (q.type === 'choice' && q.options) {
+          qHtml += `<ol type="A" style="margin-left: 20px; margin-top: 8px;">`;
+          q.options.forEach(opt => {
+            qHtml += `<li style="margin: 4px 0;">${escapeHTML(opt)}</li>`;
+          });
+          qHtml += `</ol>`;
+        } else {
+          // Linhas para resposta escrita
+          qHtml += `
+            <div style="margin-top: 12px;">
+              <div style="height: 28px; border-bottom: 1px solid #666;"></div>
+              <div style="height: 28px; border-bottom: 1px solid #666;"></div>
+              <div style="height: 28px; border-bottom: 1px solid #666;"></div>
+            </div>
+          `;
+        }
+
+        qHtml += `</li>`;
+        return qHtml;
+      }).join('');
+
+      const win = window.open('', '_blank');
+      if (!win) {
+        toast('Habilite os pop-ups para gerar a folha impressa.');
+        return;
+      }
+
+      win.document.write(`
+        <!doctype html>
+        <html lang="pt-BR">
+        <head>
+          <meta charset="utf-8">
+          <title>${escapeHTML(title)}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #111; line-height: 1.5; }
+            h1 { text-align: center; font-size: 20px; margin-bottom: 20px; text-transform: uppercase; }
+            .box-header { border: 1px solid #000; padding: 12px; margin-bottom: 30px; font-size: 14px; }
+            ol { padding-left: 20px; }
+          </style>
+        </head>
+        <body>
+          <h1>${escapeHTML(title)}</h1>
+          <div class="box-header">
+            <strong>Nome do Aluno:</strong> ____________________________________________________<br><br>
+            <strong>Data:</strong> ____ / ____ / ________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Turma:</strong> ____________
+          </div>
+          <ol>${content}</ol>
+          <script>window.onload = () => { window.print(); }<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    function escapeHTML(str) {
+      return String(str ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+  </script>
+</body>
+</html>
