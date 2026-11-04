@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EduPlay - aprender pode ser uma aventura.">
+  <title>EduPlay | Aprender jogando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">E</span><span>Edu<span class="brand-accent">Play</span></span></a>
+    <nav class="nav-links">
+      <a class="active" href="#inicio">Início</a><a href="#atividades">Atividades</a>
+      <a href="pages/ranking.html">Ranking</a><a href="pages/professor.html">Professor</a>
+    </nav>
+    <div class="nav-actions"><span class="user-mini"><span class="avatar">A</span><span id="navUser">Visitante</span></span><button class="btn btn-primary btn-small" id="loginOpen">Cadastrar-se</button></div>
+    <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menu">☰</button>
+  </header>
+
+  <main>
+    <section class="hero section-wrap" id="inicio">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> APRENDER NUNCA FOI TÃO DIVERTIDO</div>
+        <h1>Transforme seus estudos em uma <span class="gradient-text">aventura.</span></h1>
+        <p class="hero-lead">Aprenda Química com perguntas, desafios e missões. Responda, entenda seus erros e conquiste pontos enquanto evolui.</p>
+        <div class="hero-buttons"><a class="btn btn-primary" href="#atividades">Explorar atividades <span>→</span></a><a class="btn btn-ghost" href="pages/ranking.html">Ver ranking</a></div>
+        <div class="hero-proof"><div class="proof-avatars"><span>J</span><span>M</span><span>P</span><span>+</span></div><span>Aprenda no seu ritmo e evolua a cada desafio.</span></div>
+      </div>
+      <div class="hero-art">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="float-card float-xp"><span class="float-icon">⚡</span><div><b>+50 XP</b><small>Você está evoluindo!</small></div></div>
+        <div class="game-card">
+          <div class="game-card-top"><span class="game-tag">SUA JORNADA</span><span class="three-dots">•••</span></div>
+          <div class="mascot">🚀</div><h3>Pronto para decolar?</h3><p>Uma missão de cada vez.</p>
+          <div class="progress-label"><span>Progresso do nível</span><b>65%</b></div><div class="progress-track"><span style="width:65%"></span></div>
+          <div class="game-card-bottom"><span>⭐ Nível 3</span><span>🎯 5 missões</span></div>
+        </div>
+        <div class="float-card float-streak"><span class="streak-icon">🔥</span><div><b>Sequência!</b><small>Continue assim</small></div></div>
+        <span class="spark spark-a">✦</span><span class="spark spark-b">✧</span>
+      </div>
+    </section>
+
+    <section class="stats-strip section-wrap">
+      <div><span class="stat-icon purple">🎮</span><span><b>Aprenda jogando</b><small>Atividades interativas</small></span></div>
+      <div><span class="stat-icon orange">🏆</span><span><b>Conquiste pontos</b><small>Suba no ranking</small></span></div>
+      <div><span class="stat-icon green">🧠</span><span><b>Aprenda com os erros</b><small>Explicações nas respostas</small></span></div>
+    </section>
+
+    <section class="section-wrap activities-section" id="atividades">
+      <div class="section-heading"><div><div class="eyebrow">HORA DE COLOCAR EM PRÁTICA</div><h2>Escolha sua próxima <span class="gradient-text">missão</span></h2><p>Aprenda coisas novas enquanto acumula XP.</p></div><a class="text-link" href="#quiz">Ver atividade <span>→</span></a></div>
+      <div class="activity-grid">
+        <article class="activity-card quiz-card"><div class="activity-visual visual-purple"><span>🧩</span><i>QUIZ</i></div><div class="activity-body"><div class="card-meta"><span>CONHECIMENTOS GERAIS</span><span class="xp">+50 XP</span></div><h3>Desafio do conhecimento</h3><p>Teste o que você sabe em perguntas rápidas e descubra algo novo.</p><div class="card-bottom"><span>⏱ 5 min</span><button class="btn btn-dark btn-small" data-start-quiz>Começar →</button></div></div></article>
+        <article class="activity-card mission-card"><div class="activity-visual visual-orange"><span>🧭</span><i>MISSÃO</i></div><div class="activity-body"><div class="card-meta"><span>APRENDIZADO</span><span class="xp orange-xp">+30 XP</span></div><h3>Missão da semana</h3><p>Complete uma tarefa e avance mais um passo na sua jornada.</p><div class="card-bottom"><span>📌 Individual</span><button class="btn btn-dark btn-small" id="missionBtn">Ver missão →</button></div></div></article>
+        <article class="activity-card group-card"><div class="activity-visual visual-green"><span>🤝</span><i>EM GRUPO</i></div><div class="activity-body"><div class="card-meta"><span>COLABORAÇÃO</span><span class="xp green-xp">+40 XP</span></div><h3>Aprender em equipe</h3><p>Converse, compartilhe ideias e resolva atividades com sua turma.</p><div class="card-bottom"><span>👥 Em equipe</span><button class="btn btn-dark btn-small" id="groupBtn">Conhecer →</button></div></div></article>
+      </div>
+    </section>
+
+    <section class="quiz-section section-wrap" id="quiz">
+      <div class="quiz-intro"><div class="eyebrow">DESAFIO RÁPIDO</div><h2>Mostre o que você <span class="gradient-text">aprendeu.</span></h2><p>Responda, confira a explicação e ganhe pontos. Cada tentativa é uma oportunidade de aprender!</p><div class="quiz-perks"><span>✓ Feedback imediato</span><span>✓ +50 XP por acerto</span></div></div>
+      <div class="quiz-panel" id="quizPanel">
+        <div class="quiz-panel-head"><span class="quiz-label">QUIZ • CONHECIMENTOS GERAIS</span><span id="questionCount">01 / 05</span></div>
+        <div class="quiz-progress"><span id="quizProgress" style="width:20%"></span></div>
+        <div id="questionArea"><h3 id="questionText">Qual planeta é conhecido como Planeta Vermelho?</h3><div class="answer-list" id="answerList"></div></div>
+        <div class="quiz-feedback" id="quizFeedback" hidden></div>
+        <div class="quiz-panel-foot"><span id="quizHint">Escolha uma resposta para continuar.</span><button class="btn btn-primary btn-small" id="nextQuestion" disabled>Próxima →</button></div>
+      </div>
+    </section>
+
+    <section class="bottom-cta section-wrap"><div><span class="cta-star">✦</span><h2>Seu esforço merece reconhecimento.</h2><p>Acompanhe sua evolução e descubra sua posição no ranking.</p></div><a class="btn btn-white" href="pages/ranking.html">Ver classificação <span>→</span></a></section>
+  </main>
+  <footer class="footer"><a class="brand" href="index.html"><span class="brand-mark">E</span><span>Edu<span class="brand-accent">Play</span></span></a><span>Aprender pode ser uma aventura.</span><span>© 2026 EduPlay • Projeto educacional</span></footer>
+
+  <div class="modal-backdrop" id="loginModal" hidden><div class="modal"><button class="modal-close" id="loginClose">×</button><div class="modal-icon">👋</div><h2>Cadastre-se no EduPlay</h2><p>Crie seu perfil de aluno para participar das atividades e do ranking.</p><form id="loginForm"><label for="studentName">Nome completo</label><input id="studentName" maxlength="60" placeholder="Ex.: Ana Souza" required><label for="studentEmail">E-mail</label><input id="studentEmail" type="email" maxlength="100" placeholder="voce@email.com" required><button class="btn btn-primary full-width" type="submit">Criar meu cadastro</button></form><small>Protótipo: o cadastro fica apenas neste navegador. O cadastro online será ativado com o Supabase.</small></div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
