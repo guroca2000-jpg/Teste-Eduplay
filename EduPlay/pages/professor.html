@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Painel do professor | EduPlay</title><link rel="stylesheet" href="../style.css"></head><body>
+<header class="topbar"><a class="brand" href="../index.html"><span class="brand-mark">E</span><span>Edu<span class="brand-accent">Play</span></span></a><nav class="nav-links"><a href="../index.html">Início</a><a href="ranking.html">Ranking</a><a class="active" href="professor.html">Professor</a></nav><div class="nav-actions"><a class="btn btn-primary btn-small" href="../index.html">Voltar ao site</a></div><button class="mobile-menu" id="mobileMenu">☰</button></header>
+<main class="subpage section-wrap"><div class="page-title"><div class="eyebrow" style="justify-content:center">FERRAMENTAS DO EDUCADOR</div><h1>Painel do <span class="gradient-text">professor</span></h1><p>Monte atividades com quantas perguntas precisar.</p></div>
+<div class="dashboard-grid"><div class="dashboard-stat"><span>Alunos cadastrados</span><b id="totalStudents">—</b></div><div class="dashboard-stat"><span>XP acumulado da turma</span><b id="totalXP">—</b></div><div class="dashboard-stat"><span>Perguntas criadas</span><b id="totalQuestions">—</b></div></div>
+<div class="page-card" style="margin-bottom:18px"><h2 style="font:900 21px Nunito;margin-top:0">Criar perguntas</h2><p style="color:var(--muted);font-size:13px">Escolha o formato. Você pode adicionar quantas perguntas quiser à atividade.</p>
+<form id="teacherQuestionForm">
+<div class="field"><label for="customActivityTitle">Nome da atividade (opcional, para impressão)</label><input id="customActivityTitle" placeholder="Ex.: Revisão de Química — Ligações químicas"></div>
+<div class="field"><label for="questionSubject">Matéria ou assunto</label><input id="questionSubject" value="Química" placeholder="Ex.: Química orgânica"></div>
+<div class="field"><label for="questionType">Tipo de pergunta</label><select id="questionType" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:12px"><option value="choice">Marcar alternativa (múltipla escolha)</option><option value="written">Resposta escrita (linhas para responder)</option></select></div>
+<div class="field"><label for="questionPrompt">Enunciado da pergunta</label><textarea id="questionPrompt" rows="3" required placeholder="Digite a pergunta aqui..."></textarea></div>
+<div id="choiceFields">
+<div class="field"><label>Alternativas</label><input id="option1" placeholder="Alternativa A" required><input id="option2" placeholder="Alternativa B" required style="margin-top:8px"><input id="option3" placeholder="Alternativa C" required style="margin-top:8px"><input id="option4" placeholder="Alternativa D" required style="margin-top:8px"></div>
+<div class="field"><label for="correctOption">Alternativa correta (para o gabarito)</label><select id="correctOption" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:12px"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div>
+</div>
+<button class="btn btn-primary btn-small" type="submit">+ Adicionar pergunta</button>
+</form></div>
+<div class="page-card"><div class="section-heading"><div><h2 style="font-size:20px;margin:0">Perguntas da atividade</h2><p style="margin-top:5px">A lista cresce a cada pergunta adicionada.</p></div><button class="btn btn-ghost btn-small" id="printCustomActivity">Imprimir atividade ↗</button></div><div id="createdQuestions"></div></div>
+<div class="page-card" style="margin-top:18px"><h2 style="font:900 19px Nunito;margin-top:0">Alunos cadastrados</h2><div id="teacherRows"></div></div>
+<p style="font-size:11px;color:var(--muted);text-align:center;margin-top:18px">Protótipo local: as perguntas e os cadastros ficam neste navegador. A publicação online para toda a turma será feita na etapa de integração com o Supabase.</p>
+</main><footer class="footer"><a class="brand" href="../index.html"><span class="brand-mark">E</span><span>Edu<span class="brand-accent">Play</span></span></a><span>Aprender pode ser uma aventura.</span><span>© 2026 EduPlay</span></footer><div class="toast" id="toast" role="status"></div><script src="../script.js"></script><script>
+const students=getStudents().sort((a,b)=>(b.xp||0)-(a.xp||0));
+document.getElementById("totalStudents").textContent=students.length;
+document.getElementById("totalXP").textContent=students.reduce((n,s)=>n+(s.xp||0),0).toLocaleString("pt-BR");
+document.getElementById("totalQuestions").textContent=getActivities().length;
+document.getElementById("teacherRows").innerHTML=students.map((s,i)=>`<div class="ranking-row"><div class="rank-number">${i+1}º</div><div class="rank-student">${escapeHTML(s.name)}</div><div class="rank-points">${(s.xp||0).toLocaleString("pt-BR")} XP</div></div>`).join("")||'<div class="empty-state">Nenhum aluno cadastrado ainda.</div>';
+</script></body></html>
